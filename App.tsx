@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
+import { Status } from './src/components/Status'
+
 const App = () => {
 
   const renderMessageList = () => {
@@ -23,6 +25,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
+      <Status />
       {renderMessageList()}
       {renderToolbar()}
       {renderInputMethodEditor()}
