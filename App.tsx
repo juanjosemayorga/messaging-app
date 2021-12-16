@@ -29,6 +29,7 @@ const App = () => {
       {renderMessageList()}
       {renderToolbar()}
       {renderInputMethodEditor()}
+      <Text style={{ color: 'black' }}>Hola</Text>
     </View>
   )
 }

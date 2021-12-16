@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform, StyleSheet, StatusBar, Text, View } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import NetInfo from '@react-native-community/netinfo';
 
 interface IStatusState {
   isConnected: boolean | null;
@@ -16,7 +17,42 @@ const initialState = {
 export const Status = () => {
 
   const [{ isConnected }, setState] = useState<IStatusState>(initialState);
-  const backgroundColor = isConnected ? 'white' : 'red'
+  let backgroundColor = isConnected ? 'white' : 'red';
+
+  const handleChange = ({ isConnected }: { isConnected: boolean | null }) => {
+    setState({ isConnected });
+  }
+
+  const getNetInfo = async() => {
+    const { isConnected } = await NetInfo.fetch();
+    return isConnected;
+  }
+
+  useEffect(() => {
+    const subscription = NetInfo.addEventListener(handleChange);
+
+    getNetInfo().then(connected => {
+      setState({ isConnected: connected });
+    });
+
+    return () => {
+      subscription();
+    }
+  }, [])
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setState({ isConnected: !isConnected });
+  //   }, 3000);
+  // })
+
+  // useEffect(() => {
+  //   console.log('state: ', isConnected)
+  // }, [isConnected])
+
+  useEffect(() => {
+    backgroundColor = isConnected ? 'white' : 'red';
+  }, [isConnected])
 
   const statusBar = (
     <StatusBar
