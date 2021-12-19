@@ -1,13 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
+import { MessageList } from './src/components/MessageList'
 import { Status } from './src/components/Status'
+import {
+  createImageMessage,
+  createLocationMessage,
+  createTextMessage
+} from './src/utils/messageUtils'
+
+const initialState = {
+  messages: [
+    createImageMessage('https://unsplash.it/300/300'),
+    createTextMessage('World'),
+    createTextMessage('Hello'),
+    createLocationMessage({
+      latitude: 37.78825,
+      longitude: -122.4324,
+    }),
+  ],
+}
 
 const App = () => {
 
+  const [{ messages }, setState] = useState(initialState)
+
+  const handlePressMessage = () => {
+    console.log('handlePressMessage')
+  }
+
   const renderMessageList = () => {
     return (
-      <View style={styles.content}></View>
+      <View style={styles.content}>
+        <MessageList
+          messages={messages}
+          onPressMessage={handlePressMessage}
+        />
+      </View>
     )
   }
 
@@ -29,9 +58,9 @@ const App = () => {
       {renderMessageList()}
       {renderToolbar()}
       {renderInputMethodEditor()}
-      <Text style={{ color: 'black' }}>Hola</Text>
+      <Text style={{color: 'black'}}>Holi</Text>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

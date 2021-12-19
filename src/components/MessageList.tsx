@@ -1,8 +1,8 @@
 import React from 'react'
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import MapView from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 
-import { Message } from '../interfaces/interfaces'
+import { Message } from '../interfaces/interfaces';
 
 interface MessageListProps {
   messages: Message[];
@@ -20,13 +20,13 @@ export const MessageList = ({
     return (
       <View key={item.id} style={styles.messageRow}>
         <TouchableOpacity onPress={() => onPressMessage(item)}>
-          {}
+          {renderMessageBody(item)}
         </TouchableOpacity>
       </View>
     )
   }
 
-  const renderMessageBody = ({ type, text, uri, cordinate }: any) => {
+  const renderMessageBody = ({ type, text, uri, cordinate }: Message) => {
     switch (type) {
       case 'text':
         return (
@@ -39,16 +39,18 @@ export const MessageList = ({
           <Image style={styles.image} source={{ uri }} />
         )
       case 'location':
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            ...cordinate,
-            latitudeDelta: 0.08,
-            longitudeDelta: 0.04
-          }}
-        >
-          <MapView.Marker coordinate={cordinate} />
-        </MapView>
+        // TODO: To fix this about cordinates
+        return (
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}>
+          </MapView>
+        );
       default:
         return null;
     }
