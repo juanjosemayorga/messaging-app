@@ -26,7 +26,7 @@ export const MessageList = ({
     )
   }
 
-  const renderMessageBody = ({ type, text, uri, cordinate }: Message) => {
+  const renderMessageBody = ({ type, text, uri, coordinate }: Message) => {
     switch (type) {
       case 'text':
         return (
@@ -39,16 +39,18 @@ export const MessageList = ({
           <Image style={styles.image} source={{ uri }} />
         )
       case 'location':
-        // TODO: To fix this about cordinates
+        // TODO: To fix this types problem with MapView
         return (
           <MapView
             style={styles.map}
             initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
+              ...coordinate,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}>
+            <Marker
+              coordinate={coordinate}
+            />
           </MapView>
         );
       default:

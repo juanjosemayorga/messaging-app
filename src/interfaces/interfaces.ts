@@ -8,5 +8,5 @@ export interface Message {
   type?: 'text' | 'image' | 'location';
   text?: string;
   uri?: string;
-  cordinate?: Cordinate;
+  coordinate?: Cordinate;
 }
