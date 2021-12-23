@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 interface ToolbarProps {
-  idFocused: boolean;
+  isFocused: boolean;
   onChangeFocus?: (value: boolean) => void;
-  onSubmit?: () => void;
+  onSubmit?: (text: string) => void;
   onPressCamera?: () => void;
   onPressLocation?: () => void;
 }
@@ -29,7 +29,7 @@ const ToolbarButton = ({title, onPress}: ToolbarButtonProps) => (
 );
 
 export const Toolbar = ({
-  idFocused,
+  isFocused,
   onChangeFocus = () => { /* This is an intentional empty function */ },
   onSubmit = () => { /* This is an intentional empty function */ },
   onPressCamera = () => { /* This is an intentional empty function */ },
@@ -40,8 +40,17 @@ export const Toolbar = ({
   const inputRef = useRef(null)
 
   useEffect(() => {
-    console.log('Component mounted')
+    console.log('Toolbar Component mounted')
+    // console.log('inputRef: ', inputRef.current)
   }, [])
+
+  useEffect(() => {
+    console.log('Reference inputRef called!')
+  }, [inputRef])
+
+  useEffect(() => {
+    console.log('isFocused changed: ', isFocused)
+  }, [isFocused])
 
   const handleChangeText = (text: string) => {
     setState({ text })
@@ -50,21 +59,19 @@ export const Toolbar = ({
   const handleSubmitEditing = () => {
     if (!text) return;
 
-    onSubmit();
+    onSubmit(text);
     setState(initialState);
   }
 
   const handleFocus = () => {
     onChangeFocus(true);
+    console.log('handleFocus');
   }
 
   const handleBlur = () => {
     onChangeFocus(false);
+    console.log('handleBlur');
   }
-
-  // const setInputRef = (ref: any) => {
-
-  // }
 
   return (
     <View style={styles.toolbar}>
@@ -75,6 +82,7 @@ export const Toolbar = ({
           style={styles.input}
           underlineColorAndroid='transparent'
           placeholder='Type something'
+          placeholderTextColor='#999'
           blurOnSubmit={false}
           value={text}
           onChangeText={handleChangeText}
@@ -116,6 +124,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 18,
+    color: '#333',
   },
   // ...
 });

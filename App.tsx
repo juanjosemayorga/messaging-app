@@ -3,6 +3,7 @@ import { View, StyleSheet, Alert, Image, TouchableHighlight, BackHandler } from 
 
 import { MessageList } from './src/components/MessageList'
 import { Status } from './src/components/Status'
+import { Toolbar } from './src/components/Toolbar';
 import {
   createImageMessage,
   createLocationMessage,
@@ -12,6 +13,7 @@ import {
 // TODO: To type the state of the component
 const initialState = {
   fullscreenImageId: null,
+  isInputFocused: false,
   messages: [
     createImageMessage('https://unsplash.it/300/300'),
     createTextMessage('World'),
@@ -26,7 +28,7 @@ const initialState = {
 const App = () => {
 
   const [state, setState] = useState(initialState)
-  const { messages, fullscreenImageId } = state
+  const { messages, fullscreenImageId, isInputFocused } = state
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -44,6 +46,28 @@ const App = () => {
     setState({
       ...state,
       fullscreenImageId: null,
+    })
+  }
+
+  const handlePressToolbarCamera = () => {
+    console.log('handlePressToolbarCamera')
+  }
+
+  const handlePressToolbarLocation = () => {
+    console.log('handlePressToolbarLocation')
+  }
+
+  const handleChangeFocus = (isFocused: boolean) => {
+    setState({
+      ...state,
+      isInputFocused: isFocused,
+    })
+  }
+
+  const handleSubmit = (text: string) => {
+    setState({
+      ...state,
+      messages: [createTextMessage(text), ...messages],
     })
   }
 
@@ -75,6 +99,7 @@ const App = () => {
         setState({
           ...state,
           fullscreenImageId: id,
+          isInputFocused: false
         })
 
       default:
@@ -119,7 +144,15 @@ const App = () => {
 
   const renderToolbar = () => {
     return (
-      <View style={styles.toolbar}></View>
+      <View style={styles.toolbar}>
+        <Toolbar
+          isFocused={isInputFocused}
+          onSubmit={handleSubmit}
+          onChangeFocus={handleChangeFocus}
+          onPressCamera={handlePressToolbarCamera}
+          onPressLocation={handlePressToolbarLocation}
+          />
+      </View>
     )
   }
 
