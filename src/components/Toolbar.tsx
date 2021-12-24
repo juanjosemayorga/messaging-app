@@ -39,19 +39,6 @@ export const Toolbar = ({
   const [{ text }, setState] = useState<IToolbarState>(initialState)
   const inputRef = useRef(null)
 
-  useEffect(() => {
-    console.log('Toolbar Component mounted')
-    // console.log('inputRef: ', inputRef.current)
-  }, [])
-
-  useEffect(() => {
-    console.log('Reference inputRef called!')
-  }, [inputRef])
-
-  useEffect(() => {
-    console.log('isFocused changed: ', isFocused)
-  }, [isFocused])
-
   const handleChangeText = (text: string) => {
     setState({ text })
   }
@@ -65,24 +52,22 @@ export const Toolbar = ({
 
   const handleFocus = () => {
     onChangeFocus(true);
-    console.log('handleFocus');
   }
 
   const handleBlur = () => {
     onChangeFocus(false);
-    console.log('handleBlur');
   }
 
   return (
     <View style={styles.toolbar}>
-      <ToolbarButton title={'C'} onPress={onPressCamera} />
-      <ToolbarButton title={'L'} onPress={onPressLocation} />
+      <ToolbarButton title={'📷'} onPress={onPressCamera} />
+      <ToolbarButton title={'📍'} onPress={onPressLocation} />
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          underlineColorAndroid='transparent'
-          placeholder='Type something'
-          placeholderTextColor='#999'
+          underlineColorAndroid="transparent"
+          placeholder="Type something"
+          placeholderTextColor="#999"
           blurOnSubmit={false}
           value={text}
           onChangeText={handleChangeText}

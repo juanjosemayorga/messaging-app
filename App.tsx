@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Alert, Image, TouchableHighlight, BackHandler } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 
 import { MessageList } from './src/components/MessageList'
 import { Status } from './src/components/Status'
@@ -54,7 +55,17 @@ const App = () => {
   }
 
   const handlePressToolbarLocation = () => {
-    console.log('handlePressToolbarLocation')
+    Geolocation.getCurrentPosition((position) => {
+      const { coords: { latitude, longitude } } = position
+
+      setState({
+        ...state,
+        messages: [
+          createLocationMessage({ latitude, longitude }),
+          ...messages,
+        ]
+      })
+    })
   }
 
   const handleChangeFocus = (isFocused: boolean) => {
