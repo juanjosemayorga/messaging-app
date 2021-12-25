@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Alert, Image, TouchableHighlight, BackHandler } from 'react-native';
+import { View, StyleSheet, Alert, Image, TouchableHighlight, BackHandler, Text } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 
 import { MessageList } from './src/components/MessageList'
 import { Status } from './src/components/Status'
 import { Toolbar } from './src/components/Toolbar';
+import { ImageGrid } from './src/components/ImageGrid';
 import {
   createImageMessage,
   createLocationMessage,
@@ -119,6 +120,8 @@ const App = () => {
   }
 
   const renderFullscreenImage = () => {
+    console.log('renderFullscreenImage called!')
+
     if (!fullscreenImageId) return null
 
     const image = messages.find(message => message.id === fullscreenImageId)
@@ -137,6 +140,8 @@ const App = () => {
   }
 
   const renderMessageList = () => {
+    console.log('renderMessageList called!')
+
     return (
       <View style={styles.content}>
         <MessageList
@@ -148,12 +153,18 @@ const App = () => {
   }
 
   const renderInputMethodEditor = () => {
+    console.log('renderInputMethodEditor called!');
+
     return (
-      <View style={styles.inputMethodEditor}></View>
+      <View style={styles.inputMethodEditor}>
+        <ImageGrid />
+      </View>
     )
   }
 
   const renderToolbar = () => {
+    console.log('renderToolbar called!');
+
     return (
       <View style={styles.toolbar}>
         <Toolbar
@@ -189,7 +200,7 @@ const styles = StyleSheet.create({
   },
   inputMethodEditor: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'green',
   },
   toolbar: {
     borderTopWidth: 1,

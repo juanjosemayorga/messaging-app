@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-community/cameraroll": "^4.1.2",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/netinfo": "^7.1.6",
     "metro-react-native-babel-preset": "^0.66.2",
