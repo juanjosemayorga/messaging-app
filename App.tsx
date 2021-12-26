@@ -120,8 +120,6 @@ const App = () => {
   }
 
   const renderFullscreenImage = () => {
-    console.log('renderFullscreenImage called!')
-
     if (!fullscreenImageId) return null
 
     const image = messages.find(message => message.id === fullscreenImageId)
@@ -140,8 +138,6 @@ const App = () => {
   }
 
   const renderMessageList = () => {
-    console.log('renderMessageList called!')
-
     return (
       <View style={styles.content}>
         <MessageList
@@ -153,8 +149,6 @@ const App = () => {
   }
 
   const renderInputMethodEditor = () => {
-    console.log('renderInputMethodEditor called!');
-
     return (
       <View style={styles.inputMethodEditor}>
         <ImageGrid />
@@ -163,8 +157,6 @@ const App = () => {
   }
 
   const renderToolbar = () => {
-    console.log('renderToolbar called!');
-
     return (
       <View style={styles.toolbar}>
         <Toolbar
@@ -200,7 +192,6 @@ const styles = StyleSheet.create({
   },
   inputMethodEditor: {
     flex: 1,
-    backgroundColor: 'green',
   },
   toolbar: {
     borderTopWidth: 1,

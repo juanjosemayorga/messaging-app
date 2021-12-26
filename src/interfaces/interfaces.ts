@@ -10,3 +10,14 @@ export interface Message {
   uri?: string;
   coordinate?: Cordinate;
 }
+
+export interface ImageGridItem {
+  item: ImageItem;
+  size: number;
+  marginTop?: number;
+  marginLeft?: number;
+}
+
+export interface ImageItem {
+  uri: string;
+}

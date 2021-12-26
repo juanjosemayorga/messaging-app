@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CameraRoll from '@react-native-community/cameraroll'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import { Grid } from './Grid';
+import { ImageGridItem, ImageItem } from '../interfaces/interfaces';
 
 interface ImageGridProps {
-  onPressImage: () => void;
+  onPressImage?: () => void;
 }
 
 const initialState = {
@@ -17,7 +18,7 @@ const initialState = {
   ],
 };
 
-const keyExtractor = ({ uri }: any) => uri
+const keyExtractor = ({ uri }: ImageItem): string => uri
 
 export const ImageGrid = ({
   onPressImage = () => { /* This is an intentional empty function */ },
@@ -25,7 +26,13 @@ export const ImageGrid = ({
 
   const [{ images }, setState] = useState(initialState)
 
-  const renderItem = ({ item: { uri }, size, marginTop, marginLeft }: any) => {
+  const renderItem = ({
+    item: { uri },
+    size,
+    marginTop,
+    marginLeft
+  }: ImageGridItem) => {
+
     const style = {
       width: size,
       height: size,

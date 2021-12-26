@@ -1,16 +1,21 @@
 import React from 'react'
 import { Dimensions, FlatList, PixelRatio, StyleSheet } from 'react-native'
+import { ImageItem } from '../interfaces/interfaces';
 
 interface GridProps {
   renderItem: (item: any) => {};
   numColumns?: number;
   itemMargin?: number;
+  data: ImageItem[];
+  keyExtractor: (item: ImageItem) => string;
 }
 
 export const Grid = ({
   renderItem,
   numColumns = 4,
   itemMargin = StyleSheet.hairlineWidth,
+  data = [],
+  keyExtractor,
 }: GridProps) => {
 
   const renderGridItem = (info: any) => {
@@ -37,11 +42,9 @@ export const Grid = ({
     <FlatList
       renderItem={renderGridItem}
       numColumns={numColumns}
+      data={data}
+      keyExtractor={keyExtractor}
       itemMargin={itemMargin}
     />
   )
 }
-
-const styles = StyleSheet.create({
-
-})
