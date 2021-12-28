@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CameraRoll from '@react-native-community/cameraroll'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, PermissionsAndroid, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import { Grid } from './Grid';
 import { ImageGridItem, ImageItem } from '../interfaces/interfaces';
@@ -25,6 +25,48 @@ export const ImageGrid = ({
 }: ImageGridProps) => {
 
   const [{ images }, setState] = useState(initialState)
+  let loading = false;
+  let cursor = null;
+
+  useEffect(() => {
+    getImages()
+  }, [])
+
+  const getImages = async (after) => {
+    if (loading) return
+    loading = true
+
+    const permission = PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+
+    const hasPermission = await PermissionsAndroid.check(permission)
+
+    const status = await PermissionsAndroid.request(permission)
+    if (status !== 'granted') {
+      console.log('Camera roll permission denied')
+      return
+    }
+
+    const results = await CameraRoll.getPhotos({
+      first: 30,
+      after,
+      assetType: 'Photos',
+    })
+
+    const {
+      edges,
+      page_info: { has_next_page, end_cursor },
+    } = results
+
+    const loadImages = edges.map(item => item.node.image)
+
+    setState({ images: images.concat(loadImages) })
+
+  }
+
+  const getNextImages = () => {
+    if (!cursor) return;
+    getImages(cursor)
+  }
 
   const renderItem = ({
     item: { uri },
@@ -50,6 +92,7 @@ export const ImageGrid = ({
       data={images}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
+      onEndReached={getNextImages}
     />
   )
 }

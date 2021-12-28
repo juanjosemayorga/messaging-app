@@ -8,6 +8,7 @@ interface GridProps {
   itemMargin?: number;
   data: ImageItem[];
   keyExtractor: (item: ImageItem) => string;
+  onEndReached: () => void;
 }
 
 export const Grid = ({
@@ -16,6 +17,7 @@ export const Grid = ({
   itemMargin = StyleSheet.hairlineWidth,
   data = [],
   keyExtractor,
+  onEndReached,
 }: GridProps) => {
 
   const renderGridItem = (info: any) => {
