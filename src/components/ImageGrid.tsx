@@ -9,32 +9,45 @@ interface ImageGridProps {
   onPressImage?: () => void;
 }
 
+interface ImageGridState {
+  images: ImageItem[];
+  loading: boolean;
+  cursor: any;
+}
+
 const initialState = {
-  images: [
-    {uri: 'https://picsum.photos/600/600?image=10'},
-    {uri: 'https://picsum.photos/600/600?image=20'},
-    {uri: 'https://picsum.photos/600/600?image=30'},
-    {uri: 'https://picsum.photos/600/600?image=40'},
-  ],
+  images: [],
+  loading: false,
+  cursor: null,
 };
 
 const keyExtractor = ({ uri }: ImageItem): string => uri
+// const keyExtractor = (objetito: any): string => {
+//   console.log(objetito.uri);
+//   return objetito.uri;
+// }
 
 export const ImageGrid = ({
   onPressImage = () => { /* This is an intentional empty function */ },
 }: ImageGridProps) => {
 
-  const [{ images }, setState] = useState(initialState)
-  let loading = false;
-  let cursor = null;
+  const [state, setState] = useState<ImageGridState>(initialState)
+  const {images, loading, cursor} = state
+  // let loading: boolean = false;
+  // let cursor = null;
 
   useEffect(() => {
+    console.log('Se volvió a renderizar la pantalla');
     getImages()
   }, [])
 
   const getImages = async (after) => {
+
+    // console.log('after ', after)
+    // console.log('typeof after ', typeof after);
+
     if (loading) return
-    loading = true
+    setState({ ...state, loading: true })
 
     const permission = PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
 
@@ -59,14 +72,33 @@ export const ImageGrid = ({
 
     const loadImages = edges.map(item => item.node.image)
 
-    setState({ images: images.concat(loadImages) })
+    setState({
+      images: images.concat(loadImages),
+      loading: false,
+      cursor: has_next_page ? end_cursor : null,
+    })
 
   }
 
   const getNextImages = () => {
+    console.log('getNextImages called!')
+    console.log('cursor ', cursor)
+
     if (!cursor) return;
     getImages(cursor)
   }
+
+  useEffect(() => {
+    console.log('images ', state.images.length);
+  }, [images])
+
+  useEffect(() => {
+    console.log('cursor ', state.cursor);
+  }, [cursor]);
+
+  useEffect(() => {
+    console.log('loading ', state.loading);
+  }, [loading]);
 
   const renderItem = ({
     item: { uri },

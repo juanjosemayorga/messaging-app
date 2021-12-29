@@ -47,6 +47,7 @@ export const Grid = ({
       data={data}
       keyExtractor={keyExtractor}
       itemMargin={itemMargin}
+      onEndReached={onEndReached}
     />
   )
 }
