@@ -12,7 +12,7 @@ interface ImageGridProps {
 interface ImageGridState {
   images: ImageItem[];
   loading: boolean;
-  cursor: any;
+  cursor: string | null | undefined;
 }
 
 const initialState = {
@@ -22,10 +22,6 @@ const initialState = {
 };
 
 const keyExtractor = ({ uri }: ImageItem): string => uri
-// const keyExtractor = (objetito: any): string => {
-//   console.log(objetito.uri);
-//   return objetito.uri;
-// }
 
 export const ImageGrid = ({
   onPressImage = () => { /* This is an intentional empty function */ },
@@ -33,18 +29,12 @@ export const ImageGrid = ({
 
   const [state, setState] = useState<ImageGridState>(initialState)
   const {images, loading, cursor} = state
-  // let loading: boolean = false;
-  // let cursor = null;
 
   useEffect(() => {
-    console.log('Se volvió a renderizar la pantalla');
     getImages()
   }, [])
 
-  const getImages = async (after) => {
-
-    // console.log('after ', after)
-    // console.log('typeof after ', typeof after);
+  const getImages = async (after?: string | undefined) => {
 
     if (loading) return
     setState({ ...state, loading: true })
@@ -60,7 +50,7 @@ export const ImageGrid = ({
     }
 
     const results = await CameraRoll.getPhotos({
-      first: 30,
+      first: 32,
       after,
       assetType: 'Photos',
     })
@@ -81,24 +71,9 @@ export const ImageGrid = ({
   }
 
   const getNextImages = () => {
-    console.log('getNextImages called!')
-    console.log('cursor ', cursor)
-
     if (!cursor) return;
     getImages(cursor)
   }
-
-  useEffect(() => {
-    console.log('images ', state.images.length);
-  }, [images])
-
-  useEffect(() => {
-    console.log('cursor ', state.cursor);
-  }, [cursor]);
-
-  useEffect(() => {
-    console.log('loading ', state.loading);
-  }, [loading]);
 
   const renderItem = ({
     item: { uri },
