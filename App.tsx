@@ -70,6 +70,7 @@ const App = () => {
   }
 
   const handleChangeFocus = (isFocused: boolean) => {
+    console.log('handleChangeFocus', isFocused)
     setState({
       ...state,
       isInputFocused: isFocused,
@@ -80,6 +81,13 @@ const App = () => {
     setState({
       ...state,
       messages: [createTextMessage(text), ...messages],
+    })
+  }
+
+  const handlePressImage = (uri: string) => {
+    setState({
+      ...state,
+      messages: [createImageMessage(uri), ...messages],
     })
   }
 
@@ -113,6 +121,7 @@ const App = () => {
           fullscreenImageId: id,
           isInputFocused: false
         })
+        break;
 
       default:
         break;
@@ -151,7 +160,7 @@ const App = () => {
   const renderInputMethodEditor = () => {
     return (
       <View style={styles.inputMethodEditor}>
-        <ImageGrid />
+        <ImageGrid onPressImage={handlePressImage} />
       </View>
     )
   }

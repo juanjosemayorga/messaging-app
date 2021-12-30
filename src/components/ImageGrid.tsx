@@ -6,7 +6,7 @@ import { Grid } from './Grid';
 import { ImageGridItem, ImageItem } from '../interfaces/interfaces';
 
 interface ImageGridProps {
-  onPressImage?: () => void;
+  onPressImage?: (uri: string) => void;
 }
 
 interface ImageGridState {
@@ -90,7 +90,14 @@ export const ImageGrid = ({
     }
 
     return (
-      <Image source={{ uri }} style={style} />
+      <TouchableOpacity
+        key={uri}
+        activeOpacity={0.75}
+        onPress={() => onPressImage(uri)}
+        style={style}
+      >
+        <Image source={{ uri }} style={style} />
+      </TouchableOpacity>
     )
   }
 
